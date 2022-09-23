@@ -1,0 +1,19 @@
+@import "scss/variables";
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 1024px;
+  background: $black;
+  color: white;
+  margin: 0 auto;
+}
+
+.menu_container{
+  align-self: flex-start;
+  margin: 7px;
+}
+
+

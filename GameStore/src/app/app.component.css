@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 1024px;
+  background: rgb(1, 0, 1);
+  color: white;
+  margin: 0 auto;
+}
+
+.menu_container {
+  align-self: flex-start;
+  margin: 7px;
+}
+
+/*# sourceMappingURL=app.component.css.map */

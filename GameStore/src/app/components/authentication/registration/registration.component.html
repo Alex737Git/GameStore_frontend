@@ -1,0 +1,79 @@
+<div class="overlay" (click)="authService.showRegistration=false"></div>
+
+<div id="container" style="height: 650px">
+    <span *ngIf="showError" class="error_text" role="alert">
+      <span [innerHTML]="errorMessage"></span>
+    </span>
+  <div class="header">Registration </div>
+
+      <form class="col s12" [formGroup]="registrationForm" (ngSubmit)="registerUser(registrationForm.value)">
+
+        <div class="inputs">
+
+          <div class="form-Input_Wrapper">
+            <label for="first_name">First Name</label>
+            <input id="first_name" name="first_name" type="text"   formControlName="firstName" required minlength="2" maxlength="50"/>
+          </div>
+
+          <div class="form-Input_Wrapper">
+            <label for="last_name">Last Name</label>
+            <input id="last_name" name="last_name" type="text"   formControlName="lastName" required minlength="2" maxlength="50"/>
+          </div>
+
+ <div class="form-Input_Wrapper">
+            <label for="user_name">User Name</label>
+            <input id="user_name" name="user_name" type="text"   formControlName="userName" required minlength="2" maxlength="50"/>
+          </div>
+
+
+           <div class="form-Input_Wrapper">
+            <label for="email">Email</label>
+            <input #email id="email" name="email" type="email"
+                    required
+                   formControlName="email" (blur)="onBlur(email)"
+            />
+          </div>
+
+
+           <div class="form-Input_Wrapper">
+            <label for="password">Password</label>
+            <input  id="password" name="password" type="password"
+                    required
+                   formControlName="password"
+            />
+          </div>
+
+           <div class="form-Input_Wrapper">
+            <label for="confirm">Confirm Password</label>
+            <input  id="confirm" name="confirm" type="password"
+                    required
+                   formControlName="confirm"
+            />
+             <span class="helper-text error_text" *ngIf="validateControl('confirm') && hasError('confirm', 'required')"
+
+             >
+           Confirmation is required </span>
+             <span class="helper-text error_text" *ngIf="hasError('confirm', 'mustMatch')"
+
+             >Passwords must match</span>
+
+           </div>
+        </div>
+
+
+            <div *ngIf="showError" class="error">{{errorMessage}}</div>
+        <div class="submitBtn">
+          <button class="cancel" (click)="authService.showRegistration=false">Cancel</button>
+          <button  type="submit" name="action"
+                  [disabled]="registrationForm.invalid"
+          >Submit
+          </button>
+
+        </div>
+
+      </form>
+
+
+
+</div>
+

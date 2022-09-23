@@ -1,0 +1,55 @@
+@import 'src/app/scss/mixins';
+
+
+.menu{
+  @include flex-row;
+  font-size: 14px;
+  color: rgba(137,137,136,255);
+  max-width: 1024px;
+
+  .title{
+    @include flex-row;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+
+  }
+
+  .star{
+    margin-right: 5px;
+    fill: white;
+  }
+
+  .menu_items{
+    @include flex-row;
+    margin-right: 200px;
+    justify-content: space-evenly;
+    width: 400px;
+    //border: 2px solid white ;
+
+    .active{
+      color: #fff;
+    }
+  }
+
+  .userInfo{
+    margin-right: 30px;
+  }
+
+  .auth{
+    cursor: pointer;
+    @include flex-row;
+    justify-self: flex-end;
+    margin-right: 0;
+
+    .register{
+      margin-right: 5px;
+    }
+
+  }
+
+}
+
+
+
+

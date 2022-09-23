@@ -1,0 +1,49 @@
+<div class="overlay" (click)="authService.showLogin=false"></div>
+
+<div id="container" style="height: 350px">
+    <span *ngIf="showError" class="error_text" role="alert">
+      <span [innerHTML]="errorMessage"></span>
+    </span>
+  <div class="header">Please login </div>
+
+  <form class="col s12" [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)">
+
+    <div class="inputs">
+
+
+
+
+      <div class="form-Input_Wrapper">
+        <label for="user_name">User Name</label>
+        <input id="user_name" name="user_name" type="text"   formControlName="userName" required minlength="2" maxlength="50"/>
+      </div>
+
+
+      <div class="form-Input_Wrapper">
+        <label for="password">Password</label>
+        <input  id="password" name="password" type="password"
+                required
+                formControlName="password"
+        />
+      </div>
+
+
+    </div>
+
+
+    <div *ngIf="showError" class="error">{{errorMessage}}</div>
+    <div class="submitBtn">
+      <button class="cancel" (click)="authService.showRegistration=false">Cancel</button>
+      <button  type="submit" name="action"
+               [disabled]="loginForm.invalid"
+      >Submit
+      </button>
+
+    </div>
+
+  </form>
+
+
+
+</div>
+
