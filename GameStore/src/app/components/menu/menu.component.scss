@@ -3,9 +3,12 @@
 
 .menu{
   @include flex-row;
+  flex-wrap: wrap;
   font-size: 14px;
   color: rgba(137,137,136,255);
-  max-width: 1024px;
+  max-width: 1500px;
+  width: 100%;
+
 
   .title{
     @include flex-row;
@@ -15,9 +18,25 @@
 
   }
 
-  .star{
+  //.star in in styles
+
+  .shoppingCart{
+    width: 25px;
+    height: 25px;
     margin-right: 5px;
+
+  }
+
+    .signOutImg{
     fill: white;
+      width: 25px;
+
+  }
+
+  .boughtItems{
+    padding-right: 15px;
+    font-weight: bold;
+    color: white;
   }
 
   .menu_items{
@@ -32,16 +51,27 @@
     }
   }
 
+  .menuUserInfoContainer{
+    @include flex-row;
+  }
+
   .userInfo{
     margin-right: 30px;
   }
 
-  .auth{
-    cursor: pointer;
-    @include flex-row;
-    justify-self: flex-end;
-    margin-right: 0;
+  .userAvatar{
+    max-width: 30px;
+    max-height: 30px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
 
+  .auth{
+    @include flex-row;
+    cursor: pointer;
+    justify-items: flex-end;
+    //margin-left: 200px;
+    width: 200px;
     .register{
       margin-right: 5px;
     }

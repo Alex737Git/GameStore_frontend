@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ɵFormGroupValue,
+  ɵTypedOrUntyped,
+} from '@angular/forms';
 import { AuthenticationService } from '../../../services/shared/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -14,6 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Role } from '../../../enums/auth.enum';
 import { UserRepositoryService } from '../../../services/repositories/user-repository.service';
 import { IUserInfo } from '../../../interfaces/user/user';
+import { LS } from '../../../localStorage/localStorage';
 
 @Component({
   selector: 'app-login',
@@ -21,18 +27,13 @@ import { IUserInfo } from '../../../interfaces/user/user';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  //region Params
   private returnUrl: string;
   loginForm: FormGroup;
   errorMessage: string = '';
   showError: boolean;
   sent: boolean;
-  // user: IUserInfo = {
-  //   id: '',
-  //   firstName: '',
-  //   lastName: '',
-  //   email: '',
-  //   role: '',
-  // };
+  //endregion
 
   //#region Ctor
   constructor(
@@ -51,15 +52,19 @@ export class LoginComponent implements OnInit {
   //#endregion
 
   buildLoginForm() {
+    let data = this.authService.getInfo(LS.loginInfo);
+    console.log('Data: ', data);
     this.loginForm = this.formBuilder.group({
-      userName: [''],
-      password: ['', PasswordValidation],
+      userName: [data.userName],
+      password: [data.password, PasswordValidation],
+      rememberChecked: [data.rememberChecked ?? false],
     });
   }
 
   getUser() {
     this.userRepo.getUser(userRoutes.getUserInfo).subscribe((res) => {
       this.authService.sendUserInfoChangeNotification(res);
+      this.authService.rememberInfo(LS.user, res);
     });
   }
 
@@ -68,17 +73,19 @@ export class LoginComponent implements OnInit {
     // this.authService.isExternalAuth = false;
     this.showError = false;
     const login = { ...loginFormValue };
+
     const userForAuth: IUserForAuthenticationDto = {
       userName: login.userName,
       password: login.password,
     };
+
+    //region Login to server
     this.authService.loginUser(userRoutes.login, userForAuth).subscribe({
       next: (res: AuthResponseDto) => {
-        console.log('Token: ', res.token);
-        localStorage.setItem('token', res.token);
+        localStorage.setItem(LS.token, res.token);
         this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
 
-        // this.router.navigate([this.returnUrl || this.navigateTo()]);
+        this.router.navigate([this.returnUrl || this.navigateTo()]);
         this.getUser();
         this.authService.showLogin = false;
       },
@@ -87,12 +94,28 @@ export class LoginComponent implements OnInit {
         this.showError = true;
       },
     });
+    //endregion
+
+    //region Remember Me functionality
+
+    if (login.rememberChecked) {
+      this.authService.rememberInfo(LS.loginInfo, {
+        userName: loginFormValue.userName,
+        password: loginFormValue.password,
+        rememberChecked: login.rememberChecked,
+      });
+    } else {
+      this.authService.clearInfo(LS.loginInfo);
+    }
+    //endregion
   };
 
   //#endregion
 
+  //region Navigation after login
   private navigateTo(): string {
     const role = this.authService.getUserRole();
+    console.log('Role: ', role);
     return this.homeRoutePerRole(role as Role);
   }
 
@@ -100,8 +123,11 @@ export class LoginComponent implements OnInit {
     switch (role) {
       case Role.Manager:
         return '/manager';
+      case Role.Authenticated:
+        return '/user/profile';
       default:
         return '/home';
     }
   }
+  //endregion
 }

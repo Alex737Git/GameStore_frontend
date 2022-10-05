@@ -1,1 +1,36 @@
-<p>home works!</p>
+<div class="homeContainer">
+    <div *ngFor="let game of games" class="games">
+<div class="gameItem">
+  <img  src="{{game.photoUrl}}" alt="" class="gameImg">
+  <div class="infoBar">
+    <div class="price">${{game.price | number: '1.2-2'}}</div>
+    <div class="btnBuy">
+      <button class="buttonWidth">BUY</button>
+    </div>
+
+    <div class="genre">RPG</div>
+    <div class="title">  <a (click)="navigateToDetails(game.id)">{{game.title}}</a></div>
+  </div>
+</div>
+
+  </div>
+
+
+
+
+
+<!--  region Paginator-->
+  <div class="paginator">
+
+    <div class="text_paginator">Items per page:</div>
+
+    <div><input #inputPages (keyup)="handleNumberOfPages(inputPages.value)" [value]="paginator.pageSize"
+                class="numberPerPage validate" type="number" min="1" max="200"></div>
+    <span class="paginator_data"> {{paginator.currentPage}} of {{paginator.totalPages}}</span>
+    <button class="btn_arrows" [disabled]="!paginator.hasPrevious" (click)="onClick('left')"><i
+      class="material-icons">chevron_left</i></button>
+    <button class="btn_arrows" [disabled]="!paginator.hasNext" (click)="onClick('right')"><i
+      class="material-icons">chevron_right</i></button>
+  </div>
+<!--  endregion-->
+</div>

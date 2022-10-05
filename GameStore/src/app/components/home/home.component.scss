@@ -1,0 +1,13 @@
+@import 'src/app/scss/variables';
+
+.homeContainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-height: 100%;
+  max-width: $greyBackgroundWidth;
+  width: 100%;
+  background: $grey;
+  border-radius: $borderRadiusEverywhere;
+
+}

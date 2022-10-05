@@ -5,6 +5,7 @@ import { HomeComponent } from '../../components/home/home.component';
 import { InternalServerComponent } from '../../components/error-pages/internal-server/internal-server.component';
 import { NotFoundComponent } from '../../components/error-pages/not-found/not-found.component';
 import { ForbiddenComponent } from '../../components/authentication/forbidden/forbidden.component';
+import { GameDetailsComponent } from '../../components/game/game-details/game-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
     loadChildren: () => import('../user/user.module').then((m) => m.UserModule),
   },
   { path: 'forbidden', component: ForbiddenComponent },
+  { path: 'game/:id', component: GameDetailsComponent },
   { path: '500', component: InternalServerComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },

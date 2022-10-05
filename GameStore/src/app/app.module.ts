@@ -18,6 +18,9 @@ import { LoginComponent } from './components/authentication/login/login.componen
 import { JwtModule } from '@auth0/angular-jwt';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { ForbiddenComponent } from './components/authentication/forbidden/forbidden.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { GameDetailsComponent } from './components/game/game-details/game-details.component';
+import { LS } from './localStorage/localStorage';
 
 @NgModule({
   declarations: [
@@ -31,13 +34,15 @@ import { ForbiddenComponent } from './components/authentication/forbidden/forbid
     RegistrationComponent,
     LoginComponent,
     ForbiddenComponent,
+    SettingsComponent,
+    GameDetailsComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('token'),
+        tokenGetter: () => localStorage.getItem(LS.token),
         allowedDomains: ['localhost:44309'],
         disallowedRoutes: [],
       },

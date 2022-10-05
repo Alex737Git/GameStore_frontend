@@ -5,15 +5,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  max-width: 1024px;
+  max-width: $globalContainerWidth;
   background: $black;
   color: white;
   margin: 0 auto;
+  border-radius: $borderRadiusEverywhere;
 }
 
 .menu_container{
+  border-radius: $borderRadiusEverywhere;
   align-self: flex-start;
   margin: 7px;
+}
+
+.footer{
+  border-radius: $borderRadiusEverywhere;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+  height: 70px;
+  background: $black;
+  color: $white;
+  align-items: center;
+
+  .footerStar{
+    width: 48px;
+    height: 48px;
+  }
+
+  .copyrights{
+    margin-left: 450px;
+  }
 }
 
 

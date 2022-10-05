@@ -27,4 +27,11 @@ export class UserRepositoryService extends BaseRepositoryService {
       this.generateHeaders()
     );
   };
+
+  public avatarUpload = (route: string, body: FormData) => {
+    return this.http.post(
+      this.createCompleteRoute(route, this.envUrl.urlAddress),
+      body
+    );
+  };
 }

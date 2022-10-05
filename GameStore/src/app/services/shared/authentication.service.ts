@@ -5,9 +5,10 @@ import { UserForRegistrationDto } from '../../interfaces/user/userForRegistratio
 import { RegistrationResponseDto } from '../../interfaces/response/registrationResponseDto';
 import { IUserForAuthenticationDto } from '../../interfaces/user/userForAuthenticationDto';
 import { AuthResponseDto } from '../../interfaces/response/authResponseDto';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IUserInfo } from '../../interfaces/user/user';
+import { LS } from '../../localStorage/localStorage';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +16,21 @@ import { IUserInfo } from '../../interfaces/user/user';
 export class AuthenticationService {
   //region Login, Registration dialog properties
   showRegistration = false;
-  showLogin = true;
+  showLogin = false;
   //endregion
 
   //#region Properties
   private authChangeSub = new Subject<boolean>();
   public authChanged = this.authChangeSub.asObservable();
-  private userChangeSub = new Subject<IUserInfo | null>();
+  private userChangeSub = new BehaviorSubject<IUserInfo | null>({
+    avatarUrl: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    role: '',
+    id: '',
+  });
+  // private userChangeSub = new Subject<IUserInfo | null>();
   public userChanged = this.userChangeSub.asObservable();
 
   //#endregion
@@ -58,7 +67,8 @@ export class AuthenticationService {
   };
 
   public logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem(LS.token);
+    localStorage.removeItem(LS.user);
     this.sendAuthStateChangeNotification(false);
     this.sendUserInfoChangeNotification(null);
   };
@@ -67,14 +77,17 @@ export class AuthenticationService {
 
   //#region Is User Authenticated
   public isUserAuthenticated = (): boolean => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(LS.token);
     console.log(
       `isUserAuthenticated:  ${token && !this.jwtHelper.isTokenExpired(token)}`
     );
     // if (token && !this.jwtHelper.isTokenExpired(token)) return true;
     //
     // return false;
-
+    console.log(
+      '!!(token && !this.jwtHelper.isTokenExpired(token)) : ',
+      !!(token && !this.jwtHelper.isTokenExpired(token))
+    );
     return !!(token && !this.jwtHelper.isTokenExpired(token));
   };
 
@@ -120,4 +133,23 @@ export class AuthenticationService {
     ];
   };
   //#endregion
+
+  //region Write Login info to storage "Remember me" and ClearMe Get me
+  public rememberInfo(name: string, info: any) {
+    localStorage.setItem(name, JSON.stringify(info));
+  }
+  public clearInfo(value: string) {
+    localStorage.removeItem(value);
+  }
+  public getInfo(value: string) {
+    return localStorage.getItem(value)
+      ? JSON.parse(localStorage.getItem(value) ?? '')
+      : '';
+  }
+
+  //endregion
+
+  public getUser() {
+    return this.userChangeSub.getValue();
+  }
 }

@@ -96,9 +96,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/sweetalert2/src/sweetalert2.scss"
             ],
-            "scripts": []
+            "scripts": ["node_modules/sweetalert2/dist/sweetalert2.js"]
           }
         }
       }

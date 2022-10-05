@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-  public isUserAuthenticated: boolean;
+  public isUserAuthenticated = false;
   public user: IUserInfo | null;
   constructor(
     public authService: AuthenticationService,
@@ -30,6 +30,13 @@ export class MenuComponent implements OnInit {
     this.authService.userChanged.subscribe((res) => {
       this.user = res;
     });
+
+    // if (this.authService.isUserAuthenticated()) {
+    //   this.authService.sendAuthStateChangeNotification(true);
+    //   let user = this.authService.getUser();
+    //   this.authService.sendUserInfoChangeNotification(user);
+    // }
+    // console.log('User: ', this.user);
   }
 
   public logout = () => {

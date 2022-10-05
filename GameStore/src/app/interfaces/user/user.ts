@@ -4,6 +4,7 @@ export interface IUserInfo {
   email: string;
   firstName: string;
   lastName: string;
+  avatarUrl: string;
   // userName: string;
   role?: Role | string;
 }
