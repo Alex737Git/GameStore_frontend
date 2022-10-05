@@ -1,0 +1,61 @@
+<div id="container containerCreateGame" >
+
+  <div class="header">Create Game</div>
+
+  <form class="col s12" [formGroup]="gameForm" (ngSubmit)="createGame(gameForm.value)">
+
+    <div class="inputs">
+
+
+      <div class="form-Input_Wrapper inputsCreate">
+        <label for="title">Title</label>
+        <input  id="title" name="title" type="text" formControlName="title" required minlength="2"
+               maxlength="250"/>
+      </div>
+
+
+      <div class="form-Input_Wrapper inputsCreate">
+        <label  for="photo">Photo</label>
+        <img *ngIf="this.imgUrl" src="{{this.imgUrl}}" alt="no photo" class="gamePhotoForCreate">
+        <input id="photo" type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+        <button  type="button" (click)="file.click()" style="margin: 10px;">  Upload Photo
+        </button>
+
+      </div>
+
+
+
+      <div class="form-Input_Wrapper inputsCreate">
+        <label for="body">Body</label>
+        <textarea id="body" name="body" placeholder="description" required formControlName="body"   rows="7" cols="50" ></textarea>
+      </div>
+
+      <div class="form-Input_Wrapper inputsCreate">
+        <label for="price">Price</label>
+        <input id="price" name="price" type="number" formControlName="price" required min="0" step="0.01"
+
+        />
+      </div>
+
+
+    </div>
+
+    <div> Is the form valid:
+      {{!gameForm.invalid}}
+    </div>
+    <div class="submitBtn">
+      <button class="cancel btnStyles" (click)="onCancel()" >Cancel</button>
+      <button type="submit" name="action" class="btnStyles"
+              [disabled]="gameForm.invalid"
+      >Submit
+      </button>
+
+    </div>
+
+  </form>
+
+
+</div>
+
+
+

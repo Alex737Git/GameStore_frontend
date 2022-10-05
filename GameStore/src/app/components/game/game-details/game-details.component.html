@@ -1,0 +1,27 @@
+
+  <div *ngIf="game">
+    <div class="gameDetailsContainer">
+
+      <div class="gamePic">
+        <img src="{{game.photoUrl}}" alt="">
+      </div>
+      <div class="gameTitle">{{game.title}}</div>
+      <div class="price">${{game.price | number: '1.2-2'}}</div>
+      <div class="BuyBtn">
+        <button class="btnWidth">BUY</button>
+      </div>
+      <div class="hor">
+        <hr>
+      </div>
+      <div class="genres">Genres</div>
+      <div class="desc">{{game.body}}</div>
+      <div class="comments">Comments</div>
+    </div>
+
+
+<!--          <div class="card-action">-->
+<!--            <a  (click)="backClicked()" >Back</a>-->
+<!--          </div>-->
+
+  </div>
+
