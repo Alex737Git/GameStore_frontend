@@ -1,25 +1,29 @@
+<app-funcional-bar></app-funcional-bar>
 <div class="homeContainer">
-    <div *ngFor="let game of games" class="games">
-<div class="gameItem">
-  <img  src="{{game.photoUrl}}" alt="" class="gameImg">
-  <div class="infoBar">
-    <div class="price">${{game.price | number: '1.2-2'}}</div>
-    <div class="btnBuy">
-      <button class="buttonWidth">BUY</button>
+  <div *ngFor="let game of games" class="games">
+    <div class="gameItem">
+      <img src="{{game.photoUrl}}" alt="" class="gameImg">
+      <div class="infoBar">
+        <div class="price">${{game.price | number: '1.2-2'}}</div>
+        <div class="btnBuy">
+          <button class="buttonWidth">BUY</button>
+        </div>
+
+        <span class="genres" >
+
+          <!--      <span class="categorySelected">{{category}}</span>-->
+          <span *ngFor="let category of game.categories">
+          <span class="categorySelected">{{category}}</span>
+            </span>
+        </span>
+        <div class="title"><a (click)="navigateToDetails(game.id)">{{game.title}}</a></div>
+      </div>
     </div>
 
-    <div class="genre">RPG</div>
-    <div class="title">  <a (click)="navigateToDetails(game.id)">{{game.title}}</a></div>
-  </div>
-</div>
-
   </div>
 
 
-
-
-
-<!--  region Paginator-->
+  <!--  region Paginator-->
   <div class="paginator">
 
     <div class="text_paginator">Items per page:</div>
@@ -32,5 +36,5 @@
     <button class="btn_arrows" [disabled]="!paginator.hasNext" (click)="onClick('right')"><i
       class="material-icons">chevron_right</i></button>
   </div>
-<!--  endregion-->
+  <!--  endregion-->
 </div>

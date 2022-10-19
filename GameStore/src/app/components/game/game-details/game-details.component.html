@@ -13,7 +13,11 @@
       <div class="hor">
         <hr>
       </div>
-      <div class="genres">Genres</div>
+      <div *ngIf="categories">
+      <div class="genres" *ngFor="let category of categories">
+        <span class="categorySelected">{{category}}</span>
+      </div>
+      </div>
       <div class="desc">{{game.body}}</div>
       <div class="comments">Comments</div>
     </div>

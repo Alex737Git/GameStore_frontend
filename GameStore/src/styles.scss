@@ -15,16 +15,16 @@ body {
   background: $black;
 }
 
-img{
+img {
   border-radius: $borderRadiusEverywhere;
 }
 
-a{
+a {
   text-decoration: none;
   color: white;
 }
 
-button{
+button {
 
   //region Btn Style by epam
   //padding: 5px;
@@ -46,22 +46,22 @@ button{
 
 //#region Forms styles
 
-.overlay{
+.overlay {
   position: fixed;
-  top:0;
+  top: 0;
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 20;
 }
 
-#container{
+#container {
   z-index: 21;
   margin: auto;
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   bottom: 0;
   right: 0;
   width: 40%;
@@ -73,7 +73,7 @@ button{
   padding: 10px;
 }
 
-.header{
+.header {
   height: 70px;
   display: flex;
   justify-content: center;
@@ -83,7 +83,7 @@ button{
 }
 
 
-.error_text{
+.error_text {
   color: red;
   font-weight: bold;
   font-size: 16px;
@@ -92,7 +92,7 @@ button{
   border-radius: 10px;
 }
 
-.inputs{
+.inputs {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -108,10 +108,9 @@ button{
   width: 90%;
 }
 
-.helper-text{
+.helper-text {
   margin: 5px;
 }
-
 
 
 /*Make all inputs scale up when they get focus*/
@@ -129,7 +128,7 @@ textarea {
   outline: none;
   transition: transform 0.4s, box-shadow 0.4s, background-position 0.2s;
   background: radial-gradient(400px circle, #fff 99%, transparent 99%), #f1f1f1;
-  background-position: -400px 90px, 0 0;
+  background-position: -415px 90px, 0 0;
   background-repeat: no-repeat, no-repeat;
   border-radius: 0;
   position: relative;
@@ -141,7 +140,7 @@ textarea:focus {
   background-position: 0 0, 0 0;
 }
 
-.submitBtn{
+.submitBtn {
   margin: 20px auto;
   display: flex;
   justify-content: space-around;
@@ -153,7 +152,7 @@ textarea:focus {
 
 /*#region Paginator*/
 
-.paginator{
+.paginator {
 
   width: 100%;
   max-width: 300px;
@@ -163,38 +162,39 @@ textarea:focus {
   align-self: center;
   float: right;
   padding: 5px;
-  margin:20px;
+  margin: 20px;
   border-radius: 10px;
   border: 3px solid #f3f3dd;
   background: $black;
 }
 
-.numberPerPage{
+.numberPerPage {
   max-width: 100px;
   width: 100%;
 }
 
-.btn_arrows{
+.btn_arrows {
 
   border: 1px solid black;
   border-radius: 10px;
   background: $black;
-  margin:5px
+  margin: 5px
 }
 
-.text_paginator{
+.text_paginator {
   display: flex;
   justify-content: center;
-  margin:5px
+  margin: 5px
 }
 
-.paginator_data{
+.paginator_data {
   padding: 5px;
 }
+
 /*#endregion*/
 
 //region Home page games
-.games{
+.games {
 
   display: flex;
   flex-wrap: wrap;
@@ -202,13 +202,12 @@ textarea:focus {
   justify-items: center;
 
 
-
-  .gameItem{
+  .gameItem {
     margin: 30px 10px;
     flex: 2 2 auto;
     position: relative;
 
-    .backPage{
+    .backPage {
       position: absolute;
       left: 0;
       right: 0;
@@ -220,8 +219,8 @@ textarea:focus {
 
     }
 
-    &:hover{
-      .backPage{
+    &:hover {
+      .backPage {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
@@ -232,14 +231,16 @@ textarea:focus {
         border-radius: 5px;
 
       }
-      .EditGame{
+
+      .EditGame {
         display: flex;
         flex-direction: row;
         align-items: center;
         cursor: pointer;
 
       }
-      .DeleteGame{
+
+      .DeleteGame {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -247,7 +248,8 @@ textarea:focus {
       }
 
     }
-    .gameImg{
+
+    .gameImg {
       min-width: 100px;
       min-height: 100px;
       max-width: 650px;
@@ -256,10 +258,11 @@ textarea:focus {
       height: 100%;
 
     }
-    .infoBar{
+
+    .infoBar {
       padding: 3px;
       position: absolute;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       left: 0;
       right: 0;
       bottom: 0;
@@ -271,48 +274,82 @@ textarea:focus {
       'genre genre'
       'gameName gameName';
 
-      .price{
+      .price {
         grid-area: price;
-        width: 100px;
+        max-width: 100px;
+        width: 100%;
         font-size: 25px;
       }
 
-      .btnBuy{
+      .btnBuy {
         grid-area: buttonBuy;
-        width: 80px;
-        margin-left:  auto;
+        max-width: 80px;
+        width: 100%;
+        margin-left: auto;
       }
-      .genre{
+
+      .genres {
+
         grid-area: genre;
+        display: flex;
+        justify-content: flex-start;
+
       }
-      .title{
+
+
+      .title {
         grid-area: gameName;
         font-weight: bold;
         cursor: pointer;
       }
-      .buttonWidth{
-       padding: 8px 20px;
+
+      .buttonWidth {
+        padding: 8px 20px;
       }
     }
   }
 
 
-
 }
+
 //endregion
 
 //region Footer
-.star{
+.star {
   margin-right: 5px;
   fill: white;
 }
+
 //endregion
 
 //region For Create and Update Components
-.gamePhotoForCreate{
+.gamePhotoForCreate {
   max-height: 100px;
   max-width: 100px;
   background: white;
-  margin:0 auto;
+  margin: 0 auto;
 }
+
+//for categories
+
+.categories {
+  color: black;
+  background: white;
+
+  input {
+    min-height: 0;
+  }
+}
+
+//endregion
+
+
+//region Genres
+.categorySelected {
+  border-radius: $borderRadiusEverywhere;
+  background: $blueCategory;
+  padding: 0 5px;
+  margin-right: 5px;
+}
+
 //endregion

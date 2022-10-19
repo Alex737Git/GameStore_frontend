@@ -4,4 +4,5 @@ export interface IGameForUpdateDto {
   body: string;
   price: number;
   photoUrl: string;
+  categories: string[];
 }

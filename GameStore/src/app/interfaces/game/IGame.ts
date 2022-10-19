@@ -5,4 +5,5 @@ export interface IGame {
   price: number;
   photoUrl: string;
   ownerId: string;
+  categories: string[];
 }

@@ -60,7 +60,9 @@
 
   .genres{
     grid-area: genres;
-    padding: 5px;
+    display: inline-flex;
+    flex-direction: column;
+
   }
   .desc{
     grid-area: desc;
@@ -71,5 +73,12 @@
     grid-area: comments;
 
   }
+
+  //.categorySelected{
+  //  border-radius: $borderRadiusEverywhere;
+  //  background: $blueCategory;
+  //  padding: 0 5px;
+  //  margin-right: 5px;
+  //}
 
 }

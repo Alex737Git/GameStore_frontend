@@ -11,6 +11,7 @@ import {
   EmailValidation,
   PasswordValidation,
 } from '../../../common/validations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registration',
@@ -112,7 +113,7 @@ export class RegistrationComponent implements OnInit {
 
     this.authService.registerUser(userRoutes.registration, user).subscribe({
       next: (_) => {
-        alert('Registration was successful. Please login.');
+        Swal.fire('Registration was successful. Please login.');
       },
       error: (err: HttpErrorResponse) => {
         // alert(`Errors in registration: ${err?.error?.errors}`);

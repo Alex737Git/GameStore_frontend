@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 import { LS } from '../../localStorage/localStorage';
 import { IGameWithPagination } from '../../interfaces/game/IGameWithPagination';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ICategory } from '../../interfaces/category/ICategory';
+import { CategoriesRepositoryService } from '../../services/repositories/category-repository.service';
+import { categoriesRoutes } from '../../routes/categoriesRoutes';
+import { ISelectedCategory } from '../../interfaces/category/ISelectedCategory';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +22,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
   games: IGame[];
+  selectedCategories: ISelectedCategory[];
+  searchTxt: string;
 
   //#region Sort Params
   // sort = {
@@ -36,7 +42,7 @@ export class HomeComponent implements OnInit {
 
   //#region GameParams
   gameParams: IGameParams = {
-    // categoryName: '',
+    categoryName: '',
     // gameFrom: '',
     // gameTo: '',
     searchTerm: '',
@@ -59,8 +65,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private repository: GamesRepositoryService,
     private errorHandler: ErrorHandlerService,
-
-    private router: Router // private categoryRepo: CategoryRepositoryService,
+    private router: Router,
+    private categoryRepo: CategoriesRepositoryService
   ) {}
   //#endregion
 
@@ -69,7 +75,13 @@ export class HomeComponent implements OnInit {
     let size: number = Number(localStorage.getItem(LS.numberOfPages));
     if (size !== 0) this.paginator.pageSize = size;
     this.getAllGames();
-    // this.getCategories();
+    this.categoryRepo.selectedCategoriesChanged.subscribe((c) => {
+      this.selectedCategories = c;
+    });
+    this.categoryRepo.searchTxtChanged.subscribe((c) => {
+      this.searchTxt = c;
+      this.getAllGames();
+    });
   }
   //#endregion
 
@@ -79,32 +91,22 @@ export class HomeComponent implements OnInit {
   };
   //#endregion
 
-  //#region Get Categories
-  // getCategories() {
-  //   this.categoryRepo
-  //     .getCategories(categoryRoutes.getAllCategories)
-  //     .subscribe((res) => {
-  //       this.categories = res;
-  //     });
-  // }
-
-  //#endregion
-
   //#region Get All Games
   public getAllGames = () => {
     const link = this.getHref();
     if (link == '') return;
     console.log('link: ', link);
-
     this.repository.getGames(link).subscribe({
       next: (response: IGameWithPagination) => {
         this.paginator.hasNext = response.data.hasNext;
         this.paginator.hasPrevious = response.data.hasPrevious;
         this.paginator.pageSize = response.data.pageSize;
         this.paginator.currentPage = response.data.currentPage;
-        this.games = response.games;
         this.paginator.totalPages = response.data.totalPages;
-        console.log('games: ', this.games);
+
+        this.games = this.categoryRepo.getCategoryNamesAndInsertToGames(
+          response.games
+        );
       },
       error: (err: HttpErrorResponse) => {
         this.errorHandler.handleError(err);
@@ -152,30 +154,21 @@ export class HomeComponent implements OnInit {
 
   //#region Get Href
   getHref(): string {
-    //   // if (!this.gameParams.gameTo && this.gameParams.gameFrom) {
-    //   //   this.gameParams.gameTo = this.mis
-    //   //     .addDays(new Date(), 1)
-    //   //     .toISOString()
-    //   //     .split('T')[0];
-    //   // }
-    //
-    //   // if (
-    //   //   this.gameParams.gameFrom &&
-    //   //   this.gameParams.gameFrom == this.gameParams.gameTo
-    //   // ) {
-    //   //   this.gameParams.gameTo = this.mis
-    //   //     .addDays(new Date(this.gameParams.gameTo), 1)
-    //   //     .toISOString()
-    //   //     .split('T')[0];
-    //   // }
-    //
-    //   return this.AreDatesWrong()
-    //     ? ''
-    //     : gamesRoutes.generateRoute(
-    //       this.paginator.currentPage,
-    //       this.paginator.pageSize,
-    //       this.gameParams
-    //     );
+    if (this.selectedCategories) {
+      this.gameParams.categoryName = this.selectedCategories
+        .map((c) => c.title)
+        .join(',');
+      console.log('Categories Params: ', this.gameParams.categoryName);
+    } else {
+      this.gameParams.categoryName = '';
+    }
+
+    if (this.searchTxt) {
+      this.gameParams.searchTerm = this.searchTxt;
+    } else {
+      this.gameParams.searchTerm = '';
+    }
+
     return gamesRoutes.generateRoute(
       this.paginator.currentPage,
       this.paginator.pageSize,

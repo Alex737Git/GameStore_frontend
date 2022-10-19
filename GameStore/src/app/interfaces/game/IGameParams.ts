@@ -1,7 +1,5 @@
 ﻿export interface IGameParams {
-  // categoryName: string;
-  // gameFrom: string;
-  // gameTo: string;
+  categoryName: string;
   searchTerm: string;
   orderBy: string;
 }

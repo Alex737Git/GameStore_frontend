@@ -6,8 +6,9 @@ import { IGameForCreationDto } from '../../../interfaces/game/IGameForCreationDt
 import { GamesRepositoryService } from '../../../services/repositories/games-repository.service';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
-import { userRoutes } from '../../../routes/userRoutes';
-import { IUserInfo } from '../../../interfaces/user/user';
+import { CategoriesRepositoryService } from '../../../services/repositories/category-repository.service';
+import { ICategory } from '../../../interfaces/category/ICategory';
+import { ISelectedCategory } from '../../../interfaces/category/ISelectedCategory';
 
 @Component({
   selector: 'app-game-create',
@@ -15,50 +16,72 @@ import { IUserInfo } from '../../../interfaces/user/user';
   styleUrls: ['./game-create.component.scss'],
 })
 export class GameCreateComponent implements OnInit {
+  //region Properties
   public gameForm: FormGroup;
   public imgUrl = '';
-
-  // public categories: ICategory[];
+  public categories: ICategory[];
   selectedValue: string;
+  selectedCategories: ISelectedCategory[] = [];
+
+  //endregion
+
+  //region Ctor
   constructor(
     private location: Location,
-    private gameRepo: GamesRepositoryService // private categoryRepo: CategoryRepositoryService,
+    private gameRepo: GamesRepositoryService,
+    private categoryRepo: CategoriesRepositoryService
   ) {}
-  ngOnInit() {
-    // this.getCategories();
-    // this.imgUrl =
-    //   'https://game-store-photos-bucket.s3.amazonaws.com/6950395a-5fb6-4332-9978-6523b2eee056';
 
+  //endregion
+
+  //region NgOnInit
+  ngOnInit() {
     this.createForm();
+    this.categoryRepo.categoriesChanged.subscribe((s) => {
+      this.categories = s;
+    });
   }
 
+  //endregion
+
+  //region Create Form
   createForm() {
     this.gameForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
       body: new FormControl('', [Validators.required]),
-      // category: new FormControl('', [Validators.required]),
       price: new FormControl(0, [Validators.required]),
       photoUrl: new FormControl('', [Validators.required]),
     });
   }
 
-  // getCategories() {
-  //   this.categoryRepo
-  //     .getCategories(categoryRoutes.getAllCategories)
-  //     .subscribe((res) => {
-  //       this.categories = res;
-  //     });
-  // }
+  //endregion
 
+  //region On Cancel
   public onCancel = () => {
     this.location.back();
+    // this.deleteMe();
   };
+  //endregion
+
+  //region Create Game
   public createGame = (gameFormValue: any) => {
     if (this.gameForm.valid) {
       this.executeGameCreation(gameFormValue);
     }
   };
 
+  //endregion
+
+  // public deleteMe = () => {
+  //   console.log('here: ');
+  //   // let res = this.categoryRepo.arrangeCategories(
+  //   //   this.selectedCategories,
+  //   //   this.categories
+  //   // );
+  //   console.log('Response: ', res);
+  // };
+
+  //region ExecuteGame Creation
   private executeGameCreation = (gameFormValue: any) => {
     let gameForCreationDto: IGameForCreationDto = {
       // categoryId: this.selectedValue,
@@ -66,6 +89,7 @@ export class GameCreateComponent implements OnInit {
       body: gameFormValue.body,
       price: gameFormValue.price,
       photoUrl: gameFormValue.photoUrl,
+      categories: this.selectedCategories.map((s) => s.id),
     };
     console.log('Game: ', gameForCreationDto);
 
@@ -75,15 +99,13 @@ export class GameCreateComponent implements OnInit {
         this.location.back();
       },
       error: (err: HttpErrorResponse) => {
-        // this.alert.error(`The game was not added.`, {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
         Swal.fire(`The game was not added.`);
         this.location.back();
       },
     });
   };
+
+  //endregion
 
   //region Upload Photo
   uploadFile = async (files: any) => {
@@ -108,4 +130,26 @@ export class GameCreateComponent implements OnInit {
     });
   };
   //  endregion
+
+  handleSelected($event: any) {
+    if ($event.target.checked) {
+      this.selectedCategories.push({
+        id: $event.target.id,
+        title: $event.target.labels[0].innerHTML,
+      });
+      console.log('Cat: push: ', this.selectedCategories);
+    } else {
+      this.handleDeleteSelectedCategory($event.target.id);
+    }
+  }
+
+  // handleChecked(id: string): boolean {
+  //   return !!this.selectedCategories.find((s) => s.id == id);
+  // }
+
+  handleDeleteSelectedCategory(id: string) {
+    this.selectedCategories = this.selectedCategories.filter(
+      (c) => c.id !== id
+    );
+  }
 }

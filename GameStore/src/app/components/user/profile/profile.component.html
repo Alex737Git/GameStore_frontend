@@ -1,8 +1,6 @@
+<!--<app-funcional-bar></app-funcional-bar>-->
 <div class="profileContainer">
-  <div class="GenreSearchContainer">
-    <div>Genre</div>
-    <div>Search</div>
-  </div>
+
   <div class="buttonsContainer">
     <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
     <button (click)="file.click()"> Upload Avatar
@@ -73,8 +71,13 @@
         <div class="btnBuy">
           <button class="buttonWidth">BUY</button>
         </div>
+        <span class="genres" >
 
-        <div class="genre">RPG</div>
+          <span *ngFor="let category of game.categories">
+          <span class="categorySelected">{{category}}</span>
+            </span>
+        </span>
+
         <div class="title"><a (click)="navigateToDetails(game.id)">{{game.title}}</a></div>
       </div>
 
@@ -82,4 +85,5 @@
 
 
   </div>
+
 </div>

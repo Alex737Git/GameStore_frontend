@@ -21,6 +21,7 @@ import { ForbiddenComponent } from './components/authentication/forbidden/forbid
 import { SettingsComponent } from './components/settings/settings.component';
 import { GameDetailsComponent } from './components/game/game-details/game-details.component';
 import { LS } from './localStorage/localStorage';
+import { SharedModule } from './modules/shared-module/shared.module';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { LS } from './localStorage/localStorage';
     RouterModule,
     RoutingModule,
     ReactiveFormsModule,
+    SharedModule,
   ],
   providers: [
     {
@@ -60,5 +62,6 @@ import { LS } from './localStorage/localStorage';
     },
   ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}

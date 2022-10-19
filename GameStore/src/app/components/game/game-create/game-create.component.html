@@ -1,28 +1,61 @@
-<div id="container containerCreateGame" >
+<div id="container containerCreateGame"  >
 
   <div class="header">Create Game</div>
 
   <form class="col s12" [formGroup]="gameForm" (ngSubmit)="createGame(gameForm.value)">
 
     <div class="inputs">
-
-
+<!--      region Title-->
       <div class="form-Input_Wrapper inputsCreate">
         <label for="title">Title</label>
         <input  id="title" name="title" type="text" formControlName="title" required minlength="2"
-               maxlength="250"/>
+                maxlength="250"/>
       </div>
+<!--      endregion-->
 
-
+<!-- region Photo-->
       <div class="form-Input_Wrapper inputsCreate">
         <label  for="photo">Photo</label>
         <img *ngIf="this.imgUrl" src="{{this.imgUrl}}" alt="no photo" class="gamePhotoForCreate">
         <input id="photo" type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
         <button  type="button" (click)="file.click()" style="margin: 10px;">  Upload Photo
         </button>
-
       </div>
+<!--endregion-->
 
+<!--region Categories-->
+      <div class="form-Input_Wrapper inputsCreate">
+        <label >Categories</label>
+        <div  class="categories" >
+          <ul>
+            <ng-container
+              *ngFor="let node of categories"
+              [ngTemplateOutlet]="treeNode"
+              [ngTemplateOutletContext]="{ $implicit: node }">
+            </ng-container>
+          </ul>
+
+          <ng-template #treeNode let-data>
+
+        <span>
+           <input type="checkbox" id="{{data.id}}" class="genreCheckbox" (change)="handleSelected($event)"
+           >
+           <label for="{{data.id}}">{{data.title}}</label>
+          </span>
+
+            <ng-container *ngIf="data.children">
+              <ul>
+                <ng-container
+                  *ngFor="let child of data.children"
+                  [ngTemplateOutlet]="treeNode"
+                  [ngTemplateOutletContext]="{ $implicit: child }">
+                </ng-container>
+              </ul>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+<!--endregion -->
 
 
       <div class="form-Input_Wrapper inputsCreate">

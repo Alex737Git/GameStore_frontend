@@ -9,6 +9,7 @@ import { GamesRepositoryService } from '../../../services/repositories/games-rep
 import { IGame } from '../../../interfaces/game/IGame';
 import { gamesRoutes } from '../../../routes/gamesRoutes';
 import Swal from 'sweetalert2';
+import { CategoriesRepositoryService } from '../../../services/repositories/category-repository.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,13 +24,15 @@ export class ProfileComponent implements OnInit {
     private userService: UserRepositoryService,
     private authService: AuthenticationService,
     private router: Router,
-    private repoService: GamesRepositoryService
+    private repoService: GamesRepositoryService,
+    private categoryRepo: CategoriesRepositoryService
   ) {}
 
   ngOnInit() {
     this.getAllGames();
   }
 
+  //region Update File
   uploadFile = async (files: any) => {
     if (files.length === 0) {
       return;
@@ -50,13 +53,16 @@ export class ProfileComponent implements OnInit {
       error: (err: HttpErrorResponse) => console.log(err),
     });
   };
+  //endregion
 
+  //region GetAllGames
   public getAllGames = () => {
-    console.log('Getting User Games Profile.component');
     this.repoService.getUserGames(gamesRoutes.getUserGames).subscribe((res) => {
       this.games = res as IGame[];
+      this.games = this.categoryRepo.getCategoryNamesAndInsertToGames(res);
     });
   };
+  //endregion
   public navigateToDetails = (id: string) => {
     this.router.navigate([`/game/${id}`]);
   };

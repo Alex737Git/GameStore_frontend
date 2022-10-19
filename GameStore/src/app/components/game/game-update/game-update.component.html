@@ -13,7 +13,7 @@
                 maxlength="250"/>
       </div>
 
-
+<!--region Photo-->
       <div class="form-Input_Wrapper inputsCreate">
         <label  for="photo">Photo</label>
         <img *ngIf="this.imgUrl" src="{{this.imgUrl}}" alt="no photo" class="gamePhotoForCreate">
@@ -22,8 +22,42 @@
         </button>
 
       </div>
+<!--      endregion-->
 
+      <!--region Categories-->
+      <div class="form-Input_Wrapper inputsCreate">
+        <label >Categories</label>
+        <div  class="categories" >
+          <ul>
+            <ng-container
+              *ngFor="let node of categories"
+              [ngTemplateOutlet]="treeNode"
+              [ngTemplateOutletContext]="{ $implicit: node }">
+            </ng-container>
+          </ul>
 
+          <ng-template #treeNode let-data>
+
+        <span>
+           <input type="checkbox" id="{{data.id}}" class="genreCheckbox" (change)="handleSelected($event)"
+                  [checked]="handleChecked(data.id)"
+           >
+           <label for="{{data.id}}">{{data.title}}</label>
+          </span>
+
+            <ng-container *ngIf="data.children">
+              <ul>
+                <ng-container
+                  *ngFor="let child of data.children"
+                  [ngTemplateOutlet]="treeNode"
+                  [ngTemplateOutletContext]="{ $implicit: child }">
+                </ng-container>
+              </ul>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+      <!--endregion -->
 
       <div class="form-Input_Wrapper inputsCreate">
         <label for="body">Body</label>
@@ -44,7 +78,7 @@
       {{!gameForm.invalid}}
     </div>
     <div class="submitBtn">
-      <button class="cancel btnStyles" (click)="onCancel()" >Cancel</button>
+      <button class="cancel btnStyles" type="button" (click)="onCancel()" >Cancel</button>
       <button type="submit" name="action" class="btnStyles"
               [disabled]="gameForm.invalid"
       >Submit

@@ -3,4 +3,5 @@
   body: string;
   price: number;
   photoUrl: string;
+  categories:string[]
 }

@@ -8,6 +8,9 @@ import { GamesRepositoryService } from '../../../services/repositories/games-rep
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ICategory } from '../../../interfaces/category/ICategory';
+import { ISelectedCategory } from '../../../interfaces/category/ISelectedCategory';
+import { CategoriesRepositoryService } from '../../../services/repositories/category-repository.service';
 
 @Component({
   selector: 'app-game-update',
@@ -15,52 +18,59 @@ import Swal from 'sweetalert2';
   styleUrls: ['./game-update.component.scss'],
 })
 export class GameUpdateComponent implements OnInit {
+  //region Properties
   public gameForm: FormGroup;
   public imgUrl = '';
-  // public categories:ICategory[]
+  public categories: ICategory[];
   private game: IGameForUpdateDto = {
     id: '',
     title: '',
     body: '',
     price: 0,
     photoUrl: '',
-    // categoryId:""
+    categories: [],
   };
-  // selectedValue:string
   private gameId: string;
+  selectedCategories: ISelectedCategory[] = [];
+
+  //endregion
+
+  //region Ctor
   constructor(
     private location: Location,
     private gameRepo: GamesRepositoryService,
-    // private categoryRepo:CategoryRepositoryService,
-    // private alert:AlertService,
+    private categoryRepo: CategoriesRepositoryService,
     private activeRoute: ActivatedRoute
   ) {}
+  //endregion
 
+  //region NgOnInit
   ngOnInit() {
     this.gameId = this.activeRoute.snapshot.params['id'];
-    // this.getCategories()
     this.getGameDetails();
+    this.categoryRepo.categoriesChanged.subscribe((s) => {
+      this.categories = s;
+    });
     this.createForm();
   }
+  //endregion
 
+  //region Create Form
   createForm() {
     this.gameForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
       body: new FormControl('', [Validators.required]),
-      // category: new FormControl('', [Validators.required]),
       price: new FormControl(0, [Validators.required]),
       photoUrl: new FormControl('', [Validators.required]),
     });
   }
+  //endregion
 
-  // getCategories(){
-  //   this.categoryRepo.getCategories(categoryRoutes.getAllCategories).subscribe(res=>{
-  //     this.categories=res;
-  //   })
-  // }
+  //region OnCancel
   public onCancel = () => {
     this.location.back();
   };
+  //endregion
 
   public updateGame = (gameFormValue: any) => {
     if (this.gameForm.valid) {
@@ -71,11 +81,11 @@ export class GameUpdateComponent implements OnInit {
   private executeGameUpdate = (gameFormValue: any) => {
     let gameForUpdateDto: IGameForUpdateDto = {
       id: this.gameId,
-      // categoryId:this.selectedValue,
       title: gameFormValue.title,
       body: gameFormValue.body,
       price: gameFormValue.price,
       photoUrl: gameFormValue.photoUrl,
+      categories: [...this.selectedCategories.map((s) => s.id)],
     };
 
     this.gameRepo.update(gamesRoutes.updateGame, gameForUpdateDto).subscribe({
@@ -92,10 +102,11 @@ export class GameUpdateComponent implements OnInit {
     });
   };
 
+  //region getGameDetails
   getGameDetails = () => {
     this.gameRepo.getGame(gamesRoutes.getOneGame(this.gameId)).subscribe({
       next: (game: IGame) => {
-        console.log('Game: ', game);
+        console.log('Update Game: ', game);
 
         this.game.body = game.body;
         this.game.title = game.title;
@@ -107,7 +118,7 @@ export class GameUpdateComponent implements OnInit {
         // this.game.categoryId =  categoryId[0];
         // this.selectedValue = categoryId[0]
         this.gameForm.patchValue(this.game);
-        console.log('getGameDetails: game: ', this.game);
+        this.fillSelectedCategories(game);
       },
       error: (err: HttpErrorResponse) => {
         console.log('Error: ', err);
@@ -115,6 +126,7 @@ export class GameUpdateComponent implements OnInit {
       },
     });
   };
+  //endregion
 
   //region Upload Photo
   uploadFile = async (files: any) => {
@@ -139,4 +151,51 @@ export class GameUpdateComponent implements OnInit {
     });
   };
   //  endregion
+
+  //region Handle Categories
+  handleSelected($event: any) {
+    if ($event.target.checked) {
+      this.selectedCategories.push({
+        id: $event.target.id,
+        title: $event.target.labels[0].innerHTML,
+      });
+      console.log('Cat: push: ', this.selectedCategories);
+    } else {
+      this.handleDeleteSelectedCategory($event.target.id);
+    }
+  }
+
+  handleChecked(id: string): boolean {
+    return !!this.selectedCategories.find((s) => s.id == id);
+  }
+
+  handleDeleteSelectedCategory(id: string) {
+    this.selectedCategories = this.selectedCategories.filter(
+      (c) => c.id !== id
+    );
+  }
+  //endregion
+
+  //region FillSelectedCategories
+  fillSelectedCategories(game: IGame) {
+    let arr: ISelectedCategory[] = [];
+    let categories = this.categoryRepo.getDownloadedCategories();
+    game.categories.forEach((c) => {
+      arr.push({
+        id: c,
+        title: this.categoryRepo.getCategoryName(c, categories),
+      });
+    });
+
+    this.selectedCategories.push(...arr);
+  }
+  //  endregion
 }
+
+//Plan
+// fill selected categories
+//
+//
+//
+//
+//

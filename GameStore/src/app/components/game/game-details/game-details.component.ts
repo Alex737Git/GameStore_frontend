@@ -7,6 +7,7 @@ import { gamesRoutes } from '../../../routes/gamesRoutes';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { CategoriesRepositoryService } from '../../../services/repositories/category-repository.service';
 
 @Component({
   selector: 'app-game-details',
@@ -15,13 +16,15 @@ import { Location } from '@angular/common';
 })
 export class GameDetailsComponent implements OnInit {
   game: IGame;
+  categories: string[];
 
   constructor(
     private repository: GamesRepositoryService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private errorHandler: ErrorHandlerService,
-    private location: Location
+    private location: Location,
+    private categoryRepo: CategoriesRepositoryService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +36,9 @@ export class GameDetailsComponent implements OnInit {
     this.repository.getGame(gamesRoutes.getOneGame(id)).subscribe({
       next: (game: IGame) => {
         this.game = game;
-        console.log('Current game: ', game);
+        this.categories = this.categoryRepo.getCategoryNames(
+          this.game.categories
+        );
       },
       error: (err: HttpErrorResponse) => {
         this.errorHandler.handleError(err);

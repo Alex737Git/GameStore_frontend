@@ -6,9 +6,10 @@ import { ProfileComponent } from '../../components/user/profile/profile.componen
 import { GameCreateComponent } from '../../components/game/game-create/game-create.component';
 import { GameUpdateComponent } from '../../components/game/game-update/game-update.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared-module/shared.module';
 
 @NgModule({
   declarations: [ProfileComponent, GameCreateComponent, GameUpdateComponent],
-  imports: [CommonModule, UserRoutingModule, ReactiveFormsModule],
+  imports: [CommonModule, UserRoutingModule, ReactiveFormsModule, SharedModule],
 })
 export class UserModule {}
