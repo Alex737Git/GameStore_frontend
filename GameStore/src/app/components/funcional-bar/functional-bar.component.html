@@ -1,0 +1,49 @@
+<div></div>
+
+<div class="GenreSearchContainer">
+
+  <div class="addGenre">
+    <span (click)="showGenres=!showGenres">
+      <span *ngIf="showGenres" style="margin-right: 5px">Close</span>
+      <span *ngIf="!showGenres" style="margin-right: 5px">+ Add genre</span>
+    </span>
+      <span *ngFor="let cat of selectedCategories" class="categorySelected"
+            (click)="handleDeleteSelectedCategory(cat.id)">{{cat.title}} &#10006;</span>
+
+    <div *ngIf="showGenres" class="genresContainer">
+      <ul>
+        <ng-container
+          *ngFor="let node of categories"
+          [ngTemplateOutlet]="treeNode"
+          [ngTemplateOutletContext]="{ $implicit: node }">
+        </ng-container>
+      </ul>
+
+      <ng-template #treeNode let-data>
+
+        <span>
+           <input type="checkbox" id="{{data.id}}" class="genreCheckbox" (change)="handleSelected($event)"
+                  [checked]="handleChecked(data.id)"
+           >
+           <label for="{{data.id}}">{{data.title}}</label>
+          </span>
+
+        <ng-container *ngIf="data.children">
+          <ul>
+            <ng-container
+              *ngFor="let child of data.children"
+              [ngTemplateOutlet]="treeNode"
+              [ngTemplateOutletContext]="{ $implicit: child }">
+            </ng-container>
+          </ul>
+        </ng-container>
+      </ng-template>
+    </div>
+  </div>
+
+  <div>
+    <label class="searchLabel">
+    <input #search  type="text" class="searchInput" (change)="handleSearch(search.value)">
+    </label>
+  </div>
+</div>
