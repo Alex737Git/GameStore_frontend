@@ -1,31 +1,126 @@
+<div *ngIf="game">
+  <div class="gameDetailsContainer">
 
-  <div *ngIf="game">
-    <div class="gameDetailsContainer">
-
-      <div class="gamePic">
-        <img src="{{game.photoUrl}}" alt="">
-      </div>
-      <div class="gameTitle">{{game.title}}</div>
-      <div class="price">${{game.price | number: '1.2-2'}}</div>
-      <div class="BuyBtn">
-        <button class="btnWidth">BUY</button>
-      </div>
-      <div class="hor">
-        <hr>
-      </div>
-      <div *ngIf="categories">
+    <div class="gamePic">
+      <img src="{{game.photoUrl}}" alt="">
+    </div>
+    <div class="gameTitle">{{game.title}}</div>
+    <div class="price">${{game.price | number: '1.2-2'}}</div>
+    <div class="BuyBtn">
+      <button class="btnWidth">BUY</button>
+    </div>
+    <div class="hor">
+      <hr>
+    </div>
+    <div *ngIf="categories">
       <div class="genres" *ngFor="let category of categories">
         <span class="categorySelected">{{category}}</span>
       </div>
-      </div>
-      <div class="desc">{{game.body}}</div>
-      <div class="comments">Comments</div>
     </div>
+    <div class="desc">{{game.body}}</div>
+
+    <!--region Comments-->
+    <div class="comments">
+
+      <div>
+        <label>Comments</label>
+        <div>
+          <ul>
+            <ng-container
+              *ngFor="let node of comments"
+              [ngTemplateOutlet]="treeNode"
+              [ngTemplateOutletContext]="{ $implicit: node }">
+            </ng-container>
+          </ul>
+
+          <ng-template #treeNode let-data>
 
 
-<!--          <div class="card-action">-->
-<!--            <a  (click)="backClicked()" >Back</a>-->
-<!--          </div>-->
+            <img src="{{data.avatarUrl}}" alt="profile photo" class="userAvatar">
+            <span>{{data.firstName}} {{data.lastName}} {{this.changeDates(data.commentDate)  }}</span>
+
+            <div style="margin-bottom: 10px">
+            <div style="margin-bottom: 15px" >
+              <span *ngIf="data.isDeleted==false">
+              {{data.body}}
+                </span>
+              <div *ngIf="userId===data.userId" style="margin-top: 5px;">
+                <div class="btnManagementContainer">
+                  <span class="btnManagement" (click)="handleEdit(data.id)">Edit</span>
+                  <span *ngIf="!data.isDeleted" class="btnManagement" (click)="handleDelete({id:data.id,isDeleted:true,body:data.body})">Delete</span>
+                  <span *ngIf="data.isDeleted" class="btnManagement" (click)="handleEditForm({id:data.id,isDeleted:false,body:data.body})">Recover</span>
+                </div>
+              </div>
+            </div>
+
+              <!--region Add Edit Comment Form-->
+              <div *ngIf="checkId(data.id, 'edit')" class="AddCommentContainer" >
+              <textarea #text name="body"  required rows="7" cols="10"
+                        style="border-radius: 5px" [(ngModel)]="data.body"></textarea>
+                <div class="buttonAddCommentContainer">
+                  <button class="btn" (click)="handleCancelForm('edit')">Cancel</button>
+                  <button class="btn"
+                          (click)="handleEditForm({id:data.id, body:text.value, isDeleted:data.isDeleted})">
+                    Edit
+                  </button>
+                </div>
+              </div>
+              <!--endregion-->
+
+            <span (click)="handleMultipleRepeatComments(data.id)" >
+            <u>Reply</u>
+            </span>
+            </div>
+
+            <!--region Add Reply Comment Form-->
+            <div *ngIf="checkId(data.id)" class="AddCommentContainer" >
+              <textarea #text name="body" placeholder="Once upon a time ..." required rows="7" cols="10"
+                        style="border-radius: 5px"></textarea>
+              <div class="buttonAddCommentContainer">
+                <button class="btn" (click)="handleCancelForm('')">Cancel</button>
+                <button class="btn"
+                        (click)="handleSendForm({body:text.value, level:data.level+1, parentId:data.id, gameId:this.gameId})">
+                  Send
+                </button>
+              </div>
+            </div>
+            <!--endregion-->
+
+            <ng-container *ngIf="data.children">
+              <ul>
+                <ng-container
+                  *ngFor="let child of data.children"
+                  [ngTemplateOutlet]="treeNode"
+                  [ngTemplateOutletContext]="{ $implicit: child }">
+                </ng-container>
+              </ul>
+            </ng-container>
+
+          </ng-template>
+
+
+          <!--region Add Comment Form-->
+          <div *ngIf="showForm" class="AddCommentContainer">
+            <textarea #text id="body" name="body" placeholder="Once upon a time ..." required rows="7" cols="10"
+                      style="border-radius: 5px"></textarea>
+            <div class="buttonAddCommentContainer">
+              <button class="btn" (click)="handleCancelForm('showForm')">Cancel</button>
+              <button class="btn" (click)="handleSendForm({body:text.value, level:0,  gameId:this.gameId})">Send
+              </button>
+            </div>
+          </div>
+          <!--endregion-->
+
+          <button (click)="handleAddComment()">Add Comment</button>
+        </div>
+      </div>
+
+
+    </div>
+    <!--endregion -->
 
   </div>
+
+
+</div>
 

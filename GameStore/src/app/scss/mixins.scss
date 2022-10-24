@@ -5,3 +5,10 @@
   flex-direction: row;
   align-items: center;
 }
+
+@mixin userAvatar{
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 5px;
+  border-radius: 50%;
+}

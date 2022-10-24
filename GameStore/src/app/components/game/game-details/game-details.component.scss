@@ -1,4 +1,5 @@
 @import 'src/app/scss/variables';
+@import 'src/app/scss/mixins';
 
 .gameDetailsContainer{
   border-radius: 5px;
@@ -15,7 +16,6 @@
   'desc desc'
   'comments comments';
    background: $grey;
-  //justify-items: center;
 
   .gamePic{
     justify-self: center;
@@ -72,13 +72,46 @@
   .comments{
     grid-area: comments;
 
+    .userAvatar{
+      @include userAvatar;
+    }
+
+    .AddCommentContainer{
+      display: flex;
+      flex-flow: column;
+      flex-wrap: wrap;
+    }
+
+    .buttonAddCommentContainer{
+      align-self: flex-end;
+      padding: 5px;
+      margin: 7px;
+
+      .btn{
+        padding: 5px 5px;
+        width: 70px;
+        margin-left: 10px;
+      }
+    }
+
+    .btnManagementContainer{
+      display: flex;
+      flex-flow: wrap row;
+      gap:5px;
+
+
+      .btnManagement{
+        justify-content: center;
+        border-radius: 5px;
+        border: 1px solid whitesmoke;
+        padding: 1px 7px;
+          &:hover{
+            color: black;
+            background: whitesmoke;
+          }
+      }
+    }
   }
 
-  //.categorySelected{
-  //  border-radius: $borderRadiusEverywhere;
-  //  background: $blueCategory;
-  //  padding: 0 5px;
-  //  margin-right: 5px;
-  //}
 
 }

@@ -13,7 +13,7 @@ import { InternalServerComponent } from './components/error-pages/internal-serve
 import { RouterModule } from '@angular/router';
 import { RoutingModule } from './modules/routing/routing.module';
 import { RegistrationComponent } from './components/authentication/registration/registration.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/authentication/login/login.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ErrorHandlerService } from './services/error-handler.service';
@@ -53,6 +53,7 @@ import { SharedModule } from './modules/shared-module/shared.module';
     RoutingModule,
     ReactiveFormsModule,
     SharedModule,
+    FormsModule,
   ],
   providers: [
     {

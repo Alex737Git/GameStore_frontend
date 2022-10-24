@@ -72,15 +72,6 @@ export class GameCreateComponent implements OnInit {
 
   //endregion
 
-  // public deleteMe = () => {
-  //   console.log('here: ');
-  //   // let res = this.categoryRepo.arrangeCategories(
-  //   //   this.selectedCategories,
-  //   //   this.categories
-  //   // );
-  //   console.log('Response: ', res);
-  // };
-
   //region ExecuteGame Creation
   private executeGameCreation = (gameFormValue: any) => {
     let gameForCreationDto: IGameForCreationDto = {

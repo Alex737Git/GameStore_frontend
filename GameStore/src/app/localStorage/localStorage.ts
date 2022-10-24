@@ -3,4 +3,5 @@ export const LS = {
   numberOfPages: 'NumberOfPages_home',
   token: 'token',
   user: 'user',
+  deleteComment: 'deleteComment',
 };
