@@ -7,7 +7,7 @@
     <div class="gameTitle">{{game.title}}</div>
     <div class="price">${{game.price | number: '1.2-2'}}</div>
     <div class="BuyBtn">
-      <button class="btnWidth">BUY</button>
+      <button class="btnWidth" (click)="handleBuy({id:game.id, quantity:1, price: game.price, photoUrl:game.photoUrl, title:game.title})">BUY</button>
     </div>
     <div class="hor">
       <hr>

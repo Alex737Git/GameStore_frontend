@@ -10,6 +10,8 @@ import { IGame } from '../../../interfaces/game/IGame';
 import { gamesRoutes } from '../../../routes/gamesRoutes';
 import Swal from 'sweetalert2';
 import { CategoriesRepositoryService } from '../../../services/repositories/category-repository.service';
+import { CartRepositoryService } from '../../../services/repositories/cart-repository.service';
+import { IOrderedItem } from '../../../interfaces/cart/IOrderedItem';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +27,8 @@ export class ProfileComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
     private repoService: GamesRepositoryService,
-    private categoryRepo: CategoriesRepositoryService
+    private categoryRepo: CategoriesRepositoryService,
+    private cartRepo: CartRepositoryService
   ) {}
 
   ngOnInit() {
@@ -104,5 +107,9 @@ export class ProfileComponent implements OnInit {
         });
       },
     });
+  }
+
+  handleBuy(item: IOrderedItem) {
+    this.cartRepo.addItem(item);
   }
 }

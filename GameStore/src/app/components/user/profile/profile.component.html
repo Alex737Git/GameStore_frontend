@@ -69,7 +69,7 @@
       <div class="infoBar">
         <div class="price">${{game.price | number: '1.2-2'}}</div>
         <div class="btnBuy">
-          <button class="buttonWidth">BUY</button>
+          <button class="buttonWidth" (click)="handleBuy({id:game.id, quantity:1, price: game.price, photoUrl:game.photoUrl, title:game.title})">BUY</button>
         </div>
         <span class="genres" >
 

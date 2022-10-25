@@ -36,7 +36,7 @@
   <div class="auth" *ngIf="isUserAuthenticated">
 
 <!--    region Shopping Cart-->
-    <svg class="shoppingCart"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
+    <svg   (click)="handleCart()"  class="shoppingCart"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
 
 <defs>
 </defs>
@@ -48,7 +48,7 @@
 </svg>
 <!--    endregion-->
 
-    <div class="boughtItems">N</div>
+    <div class="boughtItems" *ngIf="this.quantity>0" >{{this.quantity}}</div>
     <div (click)="logout()" class="signOutImg"><!--    region Sign Out-->
 
       <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

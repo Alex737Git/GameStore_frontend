@@ -14,6 +14,8 @@ import { ICategory } from '../../interfaces/category/ICategory';
 import { CategoriesRepositoryService } from '../../services/repositories/category-repository.service';
 import { categoriesRoutes } from '../../routes/categoriesRoutes';
 import { ISelectedCategory } from '../../interfaces/category/ISelectedCategory';
+import { CartRepositoryService } from '../../services/repositories/cart-repository.service';
+import { IOrderedItem } from '../../interfaces/cart/IOrderedItem';
 
 @Component({
   selector: 'app-home',
@@ -24,21 +26,6 @@ export class HomeComponent implements OnInit {
   games: IGame[];
   selectedCategories: ISelectedCategory[];
   searchTxt: string;
-
-  //#region Sort Params
-  // sort = {
-  //   type: ['desc', 'asc'],
-  //   fields: ['title', 'categoryName', 'firstName', 'lastName', 'gameDate'],
-  //   selectedField: '',
-  //   selectedType: '',
-  // };
-  //#endregion
-
-  //#region Accordion Names
-  // firstPanel = 'Filter';
-  // secondPanel = 'Search';
-  // thirdPanel = 'Sort';
-  //#endregion
 
   //#region GameParams
   gameParams: IGameParams = {
@@ -66,7 +53,8 @@ export class HomeComponent implements OnInit {
     private repository: GamesRepositoryService,
     private errorHandler: ErrorHandlerService,
     private router: Router,
-    private categoryRepo: CategoriesRepositoryService
+    private categoryRepo: CategoriesRepositoryService,
+    private cartRepo: CartRepositoryService
   ) {}
   //#endregion
 
@@ -197,6 +185,10 @@ export class HomeComponent implements OnInit {
   // }
 
   //#endregion
+
+  handleBuy(item: IOrderedItem) {
+    this.cartRepo.addItem(item);
+  }
 
   // onSort() {
   //   this.gameParams.orderBy = `${this.sort.selectedField} ${this.sort.selectedType}`;

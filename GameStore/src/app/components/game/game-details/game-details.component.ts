@@ -16,6 +16,8 @@ import { AuthenticationService } from '../../../services/shared/authentication.s
 import { ICommentForUpdateDto } from '../../../interfaces/comment/ICommentForUpdateDto';
 import { browserRefresh } from '../../../app.component';
 import { LS } from '../../../localStorage/localStorage';
+import { CartRepositoryService } from '../../../services/repositories/cart-repository.service';
+import { IOrderedItem } from '../../../interfaces/cart/IOrderedItem';
 
 @Component({
   selector: 'app-game-details',
@@ -44,7 +46,8 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     private location: Location,
     private categoryRepo: CategoriesRepositoryService,
     private commentRepo: CommentRepositoryService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private cartRepo: CartRepositoryService
   ) {}
 
   //endregion
@@ -66,6 +69,10 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.deleteComment();
+  }
+
+  handleBuy(item: IOrderedItem) {
+    this.cartRepo.addItem(item);
   }
 
   //region getGameDetails

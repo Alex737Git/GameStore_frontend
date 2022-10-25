@@ -1,0 +1,89 @@
+@import "../../../scss/variables";
+
+.orderListContainer{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background: $grey;
+  border-radius: $borderRadiusEverywhere;
+
+  .orderListHeader {
+    display: flex;
+    margin: 10px;
+    padding: 5px;
+    flex-wrap: wrap;
+    font-size: 25px;
+    align-items: center;
+
+    .title {
+      width: 400px;
+    }
+
+    .total {
+      width: 200px;
+
+    }
+  }
+
+  .orderedItem {
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 5px;
+    border: 3px solid black;
+    margin: 15px;
+    border-radius: 5px;
+    //font-size: 25px;
+
+    .gamePhoto {
+      max-width: 120px;
+      max-height: 120px;
+    }
+
+    .desc{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      margin-right: 70px;
+      flex-wrap: wrap;
+
+      .pricePerItem{
+        font-size: 25px;
+      }
+    }
+
+    .counter{
+      display: flex;
+      flex-direction: row;
+      margin-right: 70px;
+      border-radius: 35px;
+      gap: 25px;
+      font-size: 30px;
+
+      background-color: #000;
+      border: .5px solid $green;
+      color: #fff;
+      padding: 8px 25px;
+      box-shadow: 0 0 10px 0 $green,
+      0 0 10px 0 $green,
+      0 0 5px 0 $green inset;
+
+      .sign{
+        cursor: pointer;
+      }
+    }
+    .price{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      margin-right: 70px;
+    }
+    .close{
+      font-size: 35px;
+      cursor: pointer;
+    }
+  }
+}
