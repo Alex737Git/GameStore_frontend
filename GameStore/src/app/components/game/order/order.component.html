@@ -1,1 +1,49 @@
-<p>order works!</p>
+<div class="orderContainer">
+
+  <div class="header">Complete your order</div>
+  <form [formGroup]="orderForm" (ngSubmit)="handleOrder(orderForm.value)">
+    <div class="form-Input_Wrapper">
+      <label for="firstName">First Name</label>
+      <input id="firstName" name="firstName" type="text" formControlName="firstName" required minlength="2"
+             maxlength="50"/>
+    </div>
+
+    <div class="form-Input_Wrapper">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" name="lastName" type="text" formControlName="lastName" required minlength="2"
+             maxlength="50"/>
+    </div>
+
+    <div class="form-Input_Wrapper">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email"
+             required formControlName="email"
+      />
+    </div>
+
+    <div class="form-Input_Wrapper">
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" type="tel"
+             required formControlName="phone"
+      />
+    </div>
+
+    <div class="form-Input_Wrapper">
+      <label for="payment">Payment type</label>
+      <select [(ngModel)]="selectedValue" id="payment" required formControlName="payment">
+        <option *ngFor="let c of this.paymentTypes" [ngValue]="c">{{c}}</option>
+      </select>
+
+
+    </div>
+
+    <div class="form-Input_Wrapper inputsCreate">
+      <label for="comments">Comments(optional)</label>
+      <textarea id="comments" name="comments" rows="7" cols="50" formControlName="comments"></textarea>
+    </div>
+
+    <div>Is form valid: {{!orderForm.invalid}}</div>
+    <button class="orderBtn" type="submit" [disabled]="orderForm.invalid">Order</button>
+  </form>
+  <!--  <button class="orderBtn"  [disabled]="orderForm.invalid">Order</button>-->
+</div>
