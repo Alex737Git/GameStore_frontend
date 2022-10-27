@@ -6,10 +6,10 @@
     <button (click)="file.click()"> Upload Avatar
     </button>
     <button style="margin-left: 10px"><a [routerLink]="['/user/create']">Add Game</a></button>
+    <button  *ngIf="this.role == 'Admin'"  style="margin-left: 10px"><a [routerLink]="['/user/admin']">Manager Users</a></button>
   </div>
 
 
-  <!--  <div class="homeContainer ">-->
   <div *ngFor="let game of games" class="games">
 
 

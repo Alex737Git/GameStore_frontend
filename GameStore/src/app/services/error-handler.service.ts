@@ -18,7 +18,7 @@ export class ErrorHandlerService implements HttpInterceptor {
 
   //#region HandleError
   public handleError = (error: HttpErrorResponse) => {
-    console.log("Getting Error: ", error)
+    console.log('Getting Error: ', error);
     if (error.status === 500) {
       this.handle500Error(error);
     } else if (error.status === 404) {
@@ -84,6 +84,7 @@ export class ErrorHandlerService implements HttpInterceptor {
   };
 
   private handleForbidden = (error: HttpErrorResponse) => {
+    console.log('Getting here: ', error);
     this.router.navigate(['/forbidden'], {
       queryParams: { returnUrl: this.router.url },
     });

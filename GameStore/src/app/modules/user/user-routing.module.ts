@@ -7,6 +7,8 @@ import { ProfileComponent } from '../../components/user/profile/profile.componen
 import { AuthGuard } from '../../services/guards/auth.guard';
 import { GameCreateComponent } from '../../components/game/game-create/game-create.component';
 import { GameUpdateComponent } from '../../components/game/game-update/game-update.component';
+import { AdminHomeComponent } from '../../components/admin/admin-home/admin-home.component';
+import { AdminGuard } from '../../services/guards/admin.guard';
 
 const routes: Routes = [
   { path: 'order', component: OrderComponent },
@@ -14,6 +16,7 @@ const routes: Routes = [
   { path: 'upload', component: SettingsComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'create', component: GameCreateComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminHomeComponent, canActivate: [AdminGuard] },
   {
     path: 'update/:id',
     component: GameUpdateComponent,

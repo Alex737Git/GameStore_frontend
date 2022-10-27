@@ -10,13 +10,13 @@ import { AuthenticationService } from '../shared/authentication.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ManagerGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService,
     private router: Router
   ) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.authService.isUserInRole('Manager')) return true;
+    if (this.authService.isUserInRole('Admin')) return true;
 
     this.router.navigate(['/forbidden'], {
       queryParams: { returnUrl: state.url },

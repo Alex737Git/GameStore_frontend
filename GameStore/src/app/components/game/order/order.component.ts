@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  EmailValidation,
-  PasswordValidation,
-} from '../../../common/validations';
+import { EmailValidation } from '../../../common/validations';
+import { CartRepositoryService } from '../../../services/repositories/cart-repository.service';
 
 @Component({
   selector: 'app-order',
@@ -16,7 +14,10 @@ export class OrderComponent implements OnInit {
   public orderForm: FormGroup;
   public paymentTypes = ['cash', 'card'];
   selectedValue: string;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private cartRepo: CartRepositoryService
+  ) {}
 
   ngOnInit(): void {
     this.buildOrderForm();
@@ -24,10 +25,10 @@ export class OrderComponent implements OnInit {
 
   buildOrderForm() {
     this.orderForm = new FormGroup({
-      firstName: new FormControl('Alex', Validators.required),
-      lastName: new FormControl('John', Validators.required),
-      phone: new FormControl('076767786', Validators.required),
-      email: new FormControl('a@a.com', EmailValidation),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      phone: new FormControl('', Validators.required),
+      email: new FormControl('', EmailValidation),
       payment: new FormControl('', Validators.required),
       comments: new FormControl(''),
     });
@@ -35,6 +36,7 @@ export class OrderComponent implements OnInit {
   handleOrder(data: any) {
     if (data.comments.length < 600) {
       Swal.fire('Your order successfully created!!!');
+      this.cartRepo.clearCart();
       this.router.navigate(['home']);
     } else {
       Swal.fire('Your comment should be less then 600 characters!!!');

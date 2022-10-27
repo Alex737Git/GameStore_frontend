@@ -24,7 +24,7 @@ export class CartRepositoryService {
 
   //region Ctor
   constructor() {
-    this.getData();
+    //this.getData();
   }
 
   //endregion
@@ -79,10 +79,12 @@ export class CartRepositoryService {
   reduceItems(id: string) {
     this.items = this.items.filter((c) => c.id !== id);
     this.setItems(this.items);
+    this.orderedItemsChangeSub.next(this.calculateQuantity());
   }
 
   //endregion
 
+  //region addRemoveItemQuantity
   addRemoveItemQuantity(id: string, param: string) {
     for (let i of this.items) {
       if (i.id === id) {
@@ -91,23 +93,22 @@ export class CartRepositoryService {
     }
     this.items = this.items.filter((c) => c.quantity != 0);
     this.setItems(this.items);
+    this.orderedItemsChangeSub.next(this.calculateQuantity());
   }
+  //endregion
 
-  getData() {
-    let a = {
-      id: 'a5d9968d-d519-4b9d-1582-08dab35fca79',
-      photoUrl:
-        'https://game-store-photos-bucket.s3.amazonaws.com/7e6a2919-142e-4b20-a868-41cddefeed1f',
-      price: 123,
-      quantity: 3,
-      title: 'Game Title 1',
-    };
-    this.setItems([a]);
-  }
-
+  //region getTotalPerItem
   getTotalPerItem(id: string) {
     return this.items
       .filter((c) => c.id == id)
       .reduce((basis, i) => basis + i.quantity * i.price, 0);
+  }
+  //endregion
+
+  clearCart() {
+    // this.items=[]
+    this.orderedItemsChangeSub.next(0);
+    // this.orderedItemsFullChangedSub.next();
+    this.setItems([]);
   }
 }

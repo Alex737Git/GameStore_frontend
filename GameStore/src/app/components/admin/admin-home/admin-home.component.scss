@@ -1,0 +1,54 @@
+@import "../../../scss/variables";
+
+
+.adminContainer{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background: $grey;
+  border-radius: $borderRadiusEverywhere;
+  gap: 10px;
+
+
+  .roles{
+    width: auto;
+    margin: 20px;
+    border-radius: 5px;
+  }
+  .user{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 5px;
+    border: 3px solid black;
+    margin: 15px;
+    border-radius: 5px;
+
+    .gamePhoto {
+      max-width: 100px;
+      max-height: 100px;
+      margin-right: 10px;
+    }
+
+    .name {
+      margin-right: 10px;
+      width: 200px;
+    }
+    .role{
+      margin-right: 10px;
+      width: 150px;
+    }
+    .buttons{
+      display: flex;
+      flex-direction: row;
+      margin-right: 10px;
+      gap: 10px;
+    }
+    .btn{
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid whitesmoke;
+      padding: 5px 20px;
+    }
+  }
+}

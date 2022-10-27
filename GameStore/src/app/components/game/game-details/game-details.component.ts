@@ -35,6 +35,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
   userId: string | undefined;
   editId: string;
   deletedComments: string[] = [];
+  role: string = '';
   //endregion
 
   //region Ctor
@@ -63,6 +64,15 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
       this.deleteComment();
     }
     this.getGameComments(this.gameId);
+
+    //region for Manager comments Crud functionality
+    if (this.authService.isUserAuthenticated())
+      this.role = this.authService.getUserRole();
+    this.authService.authChanged.subscribe((res) => {
+      if (res) this.role = this.authService.getUserRole();
+      else this.role = '';
+    });
+    //  endregion
   }
 
   //endregion

@@ -33,7 +33,7 @@
    <div (click)="authService.showLogin=true">Sign in</div>
  </div>
 
-  <div class="auth" *ngIf="isUserAuthenticated">
+  <div class="auth" >
 
 <!--    region Shopping Cart-->
     <svg   (click)="handleCart()"  class="shoppingCart"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
@@ -49,7 +49,7 @@
 <!--    endregion-->
 
     <div class="boughtItems" *ngIf="this.quantity>0" >{{this.quantity}}</div>
-    <div (click)="logout()" class="signOutImg"><!--    region Sign Out-->
+    <div (click)="logout()" class="signOutImg" *ngIf="isUserAuthenticated"><!--    region Sign Out-->
 
       <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 490.3 490.3" style="fill: white" xml:space="preserve">

@@ -20,6 +20,7 @@ import { IOrderedItem } from '../../../interfaces/cart/IOrderedItem';
 })
 export class ProfileComponent implements OnInit {
   games: IGame[];
+  role: string = '';
 
   constructor(
     private http: HttpClient,
@@ -33,6 +34,15 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getAllGames();
+
+    //region for  Admin button  functionality
+    if (this.authService.isUserAuthenticated())
+      this.role = this.authService.getUserRole();
+    this.authService.authChanged.subscribe((res) => {
+      if (res) this.role = this.authService.getUserRole();
+      else this.role = '';
+    });
+    //  endregion
   }
 
   //region Update File
@@ -60,6 +70,20 @@ export class ProfileComponent implements OnInit {
 
   //region GetAllGames
   public getAllGames = () => {
+    // if (this.authService.isUserInRole('Authenticated')){
+    //   this.repoService.getUserGames(gamesRoutes.getUserGames).subscribe((res) => {
+    //
+    //     this.games = res as IGame[];
+    //     this.games = this.categoryRepo.getCategoryNamesAndInsertToGames(res);
+    //   });
+    // }else{
+    //   this.repoService.getGames(gamesRoutes.).subscribe((res) => {
+    //
+    //     this.games = res as IGame[];
+    //     this.games = this.categoryRepo.getCategoryNamesAndInsertToGames(res);
+    //   });
+    // }
+
     this.repoService.getUserGames(gamesRoutes.getUserGames).subscribe((res) => {
       this.games = res as IGame[];
       this.games = this.categoryRepo.getCategoryNamesAndInsertToGames(res);

@@ -63,10 +63,6 @@
   }
 
   .userAvatar{
-    //max-width: 30px;
-    //max-height: 30px;
-    //margin-right: 5px;
-    //border-radius: 50%;
     @include userAvatar;
   }
 
@@ -74,9 +70,8 @@
     @include flex-row;
     cursor: pointer;
     justify-items: flex-end;
-    margin-left: 200px;
-    //max-width: 200px;
-    //width: 100%;
+    margin-left: 85px;
+
 
     .register{
       margin-right: 5px;

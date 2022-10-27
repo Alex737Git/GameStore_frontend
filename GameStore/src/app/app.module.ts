@@ -22,6 +22,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { GameDetailsComponent } from './components/game/game-details/game-details.component';
 import { LS } from './localStorage/localStorage';
 import { SharedModule } from './modules/shared-module/shared.module';
+import { ManagerModule } from './modules/manager/manager.module';
+import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { SharedModule } from './modules/shared-module/shared.module';
     ForbiddenComponent,
     SettingsComponent,
     GameDetailsComponent,
+    AdminHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { SharedModule } from './modules/shared-module/shared.module';
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
+    ManagerModule,
   ],
   providers: [
     {

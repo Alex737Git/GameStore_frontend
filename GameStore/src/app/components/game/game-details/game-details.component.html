@@ -44,7 +44,7 @@
               <span *ngIf="data.isDeleted==false">
               {{data.body}}
                 </span>
-              <div *ngIf="userId===data.userId" style="margin-top: 5px;">
+              <div *ngIf="userId===data.userId || this.role =='Manager'" style="margin-top: 5px;">
                 <div class="btnManagementContainer">
                   <span class="btnManagement" (click)="handleEdit(data.id)">Edit</span>
                   <span *ngIf="!data.isDeleted" class="btnManagement" (click)="handleDelete({id:data.id,isDeleted:true,body:data.body})">Delete</span>

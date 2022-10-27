@@ -30,7 +30,6 @@ export class AuthenticationService {
     role: '',
     id: '',
   });
-  // private userChangeSub = new Subject<IUserInfo | null>();
   public userChanged = this.userChangeSub.asObservable();
 
   //#endregion
@@ -81,13 +80,7 @@ export class AuthenticationService {
     console.log(
       `isUserAuthenticated:  ${token && !this.jwtHelper.isTokenExpired(token)}`
     );
-    // if (token && !this.jwtHelper.isTokenExpired(token)) return true;
-    //
-    // return false;
-    console.log(
-      '!!(token && !this.jwtHelper.isTokenExpired(token)) : ',
-      !!(token && !this.jwtHelper.isTokenExpired(token))
-    );
+
     return !!(token && !this.jwtHelper.isTokenExpired(token));
   };
 

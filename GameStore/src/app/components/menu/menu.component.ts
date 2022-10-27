@@ -31,6 +31,7 @@ export class MenuComponent implements OnInit {
       this.isUserAuthenticated = res;
     });
     this.authService.userChanged.subscribe((res) => {
+		console.log("User:", res)
       this.user = res;
     });
     this.cartRepo.orderedItemsChanged.subscribe((res) => {

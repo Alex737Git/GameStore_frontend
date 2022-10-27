@@ -16,6 +16,7 @@ import { categoriesRoutes } from '../../routes/categoriesRoutes';
 import { ISelectedCategory } from '../../interfaces/category/ISelectedCategory';
 import { CartRepositoryService } from '../../services/repositories/cart-repository.service';
 import { IOrderedItem } from '../../interfaces/cart/IOrderedItem';
+import { AuthenticationService } from '../../services/shared/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -26,12 +27,11 @@ export class HomeComponent implements OnInit {
   games: IGame[];
   selectedCategories: ISelectedCategory[];
   searchTxt: string;
+  role: string = '';
 
   //#region GameParams
   gameParams: IGameParams = {
     categoryName: '',
-    // gameFrom: '',
-    // gameTo: '',
     searchTerm: '',
     orderBy: '',
   };
@@ -54,7 +54,8 @@ export class HomeComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private router: Router,
     private categoryRepo: CategoriesRepositoryService,
-    private cartRepo: CartRepositoryService
+    private cartRepo: CartRepositoryService,
+    private authRepo: AuthenticationService
   ) {}
   //#endregion
 
@@ -70,6 +71,15 @@ export class HomeComponent implements OnInit {
       this.searchTxt = c;
       this.getAllGames();
     });
+
+    //region for Manager and Admin Crud All games functionality
+    if (this.authRepo.isUserAuthenticated())
+      this.role = this.authRepo.getUserRole();
+    this.authRepo.authChanged.subscribe((res) => {
+      if (res) this.role = this.authRepo.getUserRole();
+      else this.role = '';
+    });
+    //  endregion
   }
   //#endregion
 
@@ -127,13 +137,7 @@ export class HomeComponent implements OnInit {
   onClear(text: string) {
     if (text == 'search') {
       this.gameParams.searchTerm = '';
-    } else if (text === 'filter') {
-      // this.gameParams.categoryName = '';
-      // this.gameParams.gameTo = '';
-      // this.gameParams.gameFrom = '';
     } else {
-      // this.sort.selectedType = '';
-      // this.sort.selectedField = '';
       this.gameParams.orderBy = '';
     }
   }
@@ -146,7 +150,6 @@ export class HomeComponent implements OnInit {
       this.gameParams.categoryName = this.selectedCategories
         .map((c) => c.title)
         .join(',');
-      console.log('Categories Params: ', this.gameParams.categoryName);
     } else {
       this.gameParams.categoryName = '';
     }
@@ -166,33 +169,51 @@ export class HomeComponent implements OnInit {
 
   //#endregion
 
-  //#region Are Dates Wrong
-  // AreDatesWrong(): boolean {
-  //   if (
-  //     this.gameParams.gameFrom &&
-  //     this.gameParams.gameTo &&
-  //     new Date(this.gameParams.gameFrom) > new Date(this.gameParams.gameTo)
-  //   ) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Oops...',
-  //       text: `From date ${this.gameParams.gameFrom} can't be bigger than End date ${this.gameParams.gameTo} in the filter panel`,
-  //     });
-  //     this.gameParams.gameTo = '';
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  //#endregion
-
+  //region handleBuy
   handleBuy(item: IOrderedItem) {
     this.cartRepo.addItem(item);
   }
+  //  endregion
 
-  // onSort() {
-  //   this.gameParams.orderBy = `${this.sort.selectedField} ${this.sort.selectedType}`;
-  //   this.getAllGames();
-  // }
-  // }
+  //  region Working on Manager and Admin functionality
+  public redirectToUpdate = (id: string) => {
+    const updateUrl: string = `/user/update/${id}`;
+    this.router.navigate([updateUrl]);
+  };
+  public redirectToDelete = (id: string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteGame(id);
+      }
+    });
+  };
+
+  private deleteGame(id: string) {
+    this.repository.delete(gamesRoutes.deleteGame(id)).subscribe({
+      next: (res) => {
+        this.games = this.games.filter((g) => g.id != id);
+        Swal.fire({
+          title: 'Hurray!!',
+          text: 'Game has been deleted successfully',
+          icon: 'success',
+        });
+      },
+      error: (res) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      },
+    });
+  }
+  //endregion
 }

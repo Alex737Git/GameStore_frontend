@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
 
   getUser() {
     this.userRepo.getUser(userRoutes.getUserInfo).subscribe((res) => {
+      console.log('User info: ', res);
       this.authService.sendUserInfoChangeNotification(res);
       this.authService.rememberInfo(LS.user, res);
     });
@@ -122,7 +123,8 @@ export class LoginComponent implements OnInit {
   private homeRoutePerRole(role: Role) {
     switch (role) {
       case Role.Manager:
-        return '/manager';
+        // return '/manager/home';
+        return '/user/profile';
       case Role.Authenticated:
         return '/user/profile';
       default:
